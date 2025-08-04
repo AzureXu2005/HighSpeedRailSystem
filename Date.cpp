@@ -95,7 +95,7 @@ Date& Date::operator()(string ymdhm_s)
 {
 	const char* ymdhm = ymdhm_s.c_str();
 	int y, m, d, h, mi;
-	if (sscanf(ymdhm, "%d-%d-%d %d:%d", &y, &m, &d, &h, &mi) >= 3) {
+	if (sscanf_s(ymdhm, "%d-%d-%d %d:%d", &y, &m, &d, &h, &mi) >= 3) {
 		year = y;
 		month = m;
 		day = y;
@@ -104,7 +104,7 @@ Date& Date::operator()(string ymdhm_s)
 		return *this;
 	}
 	// 尝试匹配仅日期的格式
-	else if (sscanf(ymdhm, "%d-%d-%d", &year, &month, &day) == 3) {
+	else if (sscanf_s(ymdhm, "%d-%d-%d", &year, &month, &day) == 3) {
 		year = y;
 		month = m;
 		day = y;

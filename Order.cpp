@@ -2,6 +2,11 @@
 #include "fstream"
 #include "sstream"
 
+Order::Order(void)
+{
+	order_id = 0;
+}
+
 Order::Order(int o, int u, int t, int seat, int start, int end, Date td, Date ot, string status)
 {
 	order_id = o;

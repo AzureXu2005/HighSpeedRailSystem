@@ -93,9 +93,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="LoginInterfaceW.cpp" />
     <ClCompile Include="Order.cpp" />
+    <ClCompile Include="RegisterInterface.cpp" />
     <ClCompile Include="Seat.cpp" />
     <ClCompile Include="Station.cpp" />
+    <ClCompile Include="TemplateSet.cpp" />
     <ClCompile Include="Train.cpp" />
     <ClCompile Include="TrainSchedule.cpp" />
     <ClCompile Include="Users.cpp" />
@@ -104,15 +107,23 @@
     <QtMoc Include="HighSpeedRailSystem.h" />
     <ClCompile Include="HighSpeedRailSystem.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="LoginInterface.ui" />
+    <QtUic Include="RegisterInterface.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Date.h" />
+    <QtMoc Include="LoginInterfaceW.h" />
     <ClInclude Include="Order.h" />
+    <QtMoc Include="RegisterInterface.h" />
     <ClInclude Include="Seat.h" />
     <ClInclude Include="Station.h" />
+    <ClInclude Include="TemplateSet.h" />
     <ClInclude Include="Train.h" />
     <ClInclude Include="TrainSchedule.h" />
     <ClInclude Include="Users.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

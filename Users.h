@@ -15,6 +15,7 @@ class Users {
 		string id_card;
 
 	public:
+		Users();
 		Users(int user_id, string username, string display_name, string password, string phone, string role, string id_card);
 		~Users();
 
@@ -34,8 +35,8 @@ class Users {
 		void SetRole(string role);
 		void SetIdCard(string id_card);
 
-		friend bool operator==(Users& u1, Users& u2);
-		friend bool operator!=(Users& u1, Users& u2);
+		bool operator==(const Users& other) const;
+		bool operator!=(const Users& other) const;
 
 		friend std::istream& operator>>(std::istream& in, Users& user);
 		friend std::ostream& operator<<(std::ostream& out, Users& user);

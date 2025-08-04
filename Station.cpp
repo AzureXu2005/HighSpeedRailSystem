@@ -2,6 +2,11 @@
 #include "fstream"
 #include "sstream"
 
+Station::Station()
+{
+	station_id = 0;
+}
+
 Station::Station(int station_id, string name)
 {
 	this->station_id = station_id;

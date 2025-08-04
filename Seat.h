@@ -12,6 +12,7 @@ class Seat {
 		string seat_type;
 
 	public:
+		Seat(void);
 		Seat(int seat_id, int train_id, string seat_no, string seat_type);
 		~Seat();
 

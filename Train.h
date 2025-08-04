@@ -12,6 +12,7 @@ class Train {
 		int end_station_id;
 
 	public:
+		Train();
 		Train(int id, string code, char t, int start, int end);
 		~Train();
 

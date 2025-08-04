@@ -2,6 +2,12 @@
 #include "fstream"
 #include "sstream"
 
+Seat::Seat(void)
+{
+	seat_id = 0;
+	train_id = 0;
+}
+
 Seat::Seat(int seat_id, int train_id, string seat_no, string seat_type)
 {
 	this->seat_id = seat_id;

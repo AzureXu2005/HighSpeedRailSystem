@@ -1,4 +1,11 @@
 <RCC>
-    <qresource prefix="HighSpeedRailSystem">
+    <qresource prefix="/HighSpeedRailSystem"/>
+    <qresource prefix="/new/prefix1">
+        <file>image/MAC.png</file>
+        <file>image/train.png</file>
+        <file>image/train2.png</file>
+        <file>image/railway.png</file>
+        <file>image/railway2.png</file>
+        <file>image/success.png</file>
     </qresource>
 </RCC>

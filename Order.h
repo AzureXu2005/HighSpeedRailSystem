@@ -17,6 +17,7 @@ class Order {
 		Date order_time;
 		string status;
 	public:
+		Order(void);
 		Order(int o, int u, int t, int seat, int start, int end, Date td, Date ot, string status);
 		~Order();
 

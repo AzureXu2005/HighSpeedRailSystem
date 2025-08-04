@@ -8,6 +8,7 @@ class Station {
 		int station_id;
 		string name;
 	public:
+		Station();
 		Station(int station_id, string name);
 		~Station();
 		int GetStationId();

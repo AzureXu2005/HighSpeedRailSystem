@@ -2,6 +2,11 @@
 #include "fstream"
 #include "sstream"
 
+TrainSchedule::TrainSchedule()
+{
+	schedule_id = 0;
+}
+
 TrainSchedule::TrainSchedule(int schedule_id, int train_id, int station_id, int stop_order, Date arrive_time, Date depart_time)
 {
 	this->schedule_id = schedule_id;

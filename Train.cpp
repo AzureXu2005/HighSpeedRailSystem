@@ -2,6 +2,14 @@
 #include "fstream"
 #include "sstream"
 
+Train::Train()
+{
+	train_id = 0;
+	train_code = "";
+	start_station_id = 0;
+	end_station_id = 0;
+}
+
 Train::Train(int id, string code, char t, int start, int end)
 {
 	train_id = id;
