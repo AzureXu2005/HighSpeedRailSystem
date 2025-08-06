@@ -41,8 +41,8 @@ class Order {
 		void SetOrderTime(Date ot);
 		void SetStatus(string status);
 		
-		friend bool operator==(Order& o1, Order& o2);
-		friend bool operator!=(Order& o1, Order& o2);
+		bool operator==(const Order& other) const;
+		bool operator!=(const Order& other) const;
 
 		friend std::istream& operator>>(std::istream& in, Order& order);
 		friend std::ostream& operator<<(std::ostream& out, Order& order);

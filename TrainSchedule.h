@@ -30,8 +30,8 @@ class TrainSchedule {
 		void SetArriveTime(Date arrive_time);
 		void SetDepartTime(Date depart_time);
 
-		friend bool operator==(TrainSchedule& t1, TrainSchedule& t2);
-		friend bool operator!=(TrainSchedule& t1, TrainSchedule& t2);
+		bool operator==(const TrainSchedule& other) const;
+		bool operator!=(const TrainSchedule& other) const;
 
 		friend std::istream& operator>>(std::istream& in, TrainSchedule& schedule);
 		friend std::ostream& operator<<(std::ostream& out, TrainSchedule& schedule);

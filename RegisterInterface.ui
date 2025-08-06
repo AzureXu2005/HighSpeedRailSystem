@@ -140,6 +140,9 @@ border-image: url(:/new/prefix1/image/MAC.png);
    <property name="text">
     <string/>
    </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
+   </property>
    <property name="placeholderText">
     <string>登录密码</string>
    </property>
@@ -152,6 +155,9 @@ border-image: url(:/new/prefix1/image/MAC.png);
      <width>301</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
    </property>
    <property name="placeholderText">
     <string>确认密码</string>

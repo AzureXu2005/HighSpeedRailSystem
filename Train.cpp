@@ -74,15 +74,15 @@ void Train::SetEndStation(int end)
 	end_station_id = end;
 }
 
-bool operator==(Train& t1, Train& t2)
+bool Train::operator==(const Train& other) const
 {
-	if (t1.train_code == t2.train_code) return true;
+	if (this->train_code == other.train_code) return true;
 	else return false;
 }
 
-bool operator!=(Train& t1, Train& t2)
+bool Train::operator!=(const Train& other) const
 {
-	if (t1.train_code != t2.train_code) return true;
+	if (this->train_code != other.train_code) return true;
 	else return false;
 }
 
@@ -104,8 +104,8 @@ std::istream& operator>>(std::istream& in, Train& train)
 		train.type = type[0];
 		getline(ss, start, ',');
 		train.start_station_id = stoi(start);
-		getline(ss, end, ',');
-		train.start_station_id = stoi(end);
+		getline(ss, end);
+		train.end_station_id = stoi(end);
 	}
 	return in;
 }

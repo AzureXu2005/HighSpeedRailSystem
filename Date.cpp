@@ -177,17 +177,17 @@ string Date::Format3()
 	return res;
 }
 
-bool operator==(Date date1, Date date2)
+bool Date::operator==(const Date& other) const
 {
-	if (date1.year == date2.year && date1.month == date2.month && date1.day == date2.day
-		&& date1.hour == date2.hour && date1.minute == date2.minute) return true;
+	if (this->year == other.year && this->month == other.month && this->day == other.day
+		&& this->hour == other.hour && this->minute == other.minute) return true;
 	else return false;
 }
 
-bool operator!=(Date date1, Date date2)
+bool Date::operator!=(const Date& other) const
 {
-	if (date1.year == date2.year && date1.month == date2.month && date1.day == date2.day
-		&& date1.hour == date2.hour && date1.minute == date2.minute) return false;
+	if (this->year == other.year && this->month == other.month && this->day == other.day
+		&& this->hour == other.hour && this->minute == other.minute) return false;
 	else return true;
 }
 

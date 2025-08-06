@@ -19,8 +19,10 @@ LoginInterfaceW::LoginInterfaceW(TemplateSet<Users>* p_users, QDialog *parent)
 		this->ClickAdminButton();
 		});
 	QObject::connect(ui->pushButtonSubmit, &QPushButton::clicked, [=] {
-		if (this->LogOn()) {
-			HighSpeedRailSystem* window = new HighSpeedRailSystem;
+		Users* current_user = NULL;
+		if (this->LogOn(current_user)) {
+			HighSpeedRailSystem* window = new HighSpeedRailSystem(current_user, p_UsersSet);
+			window->setAttribute(Qt::WA_DeleteOnClose);
 			window->show();
 			this->close();
 		}
@@ -64,7 +66,7 @@ void LoginInterfaceW::ClickAdminButton()
 	}
 }
 
-bool LoginInterfaceW::LogOn()
+bool LoginInterfaceW::LogOn(Users*& current_user)
 {
 	string name = ui->lineEditName->text().toUtf8().constData();
 	string secret = ui->lineEditSecret->text().toUtf8().constData();
@@ -73,6 +75,7 @@ bool LoginInterfaceW::LogOn()
 		user_p++;
 		while (user_p != p_UsersSet->end()) {
 			if (name == user_p->GetDisplayName() && secret == user_p->GetPassword()) {
+				current_user = &(*user_p);
 				return true;
 			}
 			user_p++;
@@ -83,6 +86,7 @@ bool LoginInterfaceW::LogOn()
 	else {
 		auto admin = p_UsersSet->begin();
 		if (name == admin->GetDisplayName() && secret == admin->GetPassword()) {
+			current_user = &(*admin);
 			return true;
 		}
 		else {

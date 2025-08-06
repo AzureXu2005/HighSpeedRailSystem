@@ -18,7 +18,7 @@ public:
 	void InitLoginInterW();
 	void LoadUsersInformation();
 	void ClickAdminButton();
-	bool LogOn();
+	bool LogOn(Users*& current_user);
 
 public:
 	TemplateSet<Users>* p_UsersSet;

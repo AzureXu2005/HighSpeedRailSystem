@@ -22,6 +22,7 @@ class TemplateSet :
 		// Overloaded deque::insert for adding a new Person object at the specified position in the collection.
 		typename deque<T>::iterator insert(typename deque<T>::iterator i, const T& t = T());
 
+
 		// Reads sequentially from the specified file, constructs Person class objects, and adds them to the collection.
 		int ReadFromFile(const char filename[]);
 
@@ -65,6 +66,7 @@ typename deque<T>::iterator TemplateSet<T>::insert(typename deque<T>::iterator i
 {
 	return deque<T>::insert(i, t);
 }
+
 
 // Reads sequentially from the specified file, constructs Person class objects, and adds them to the collection.
 template<typename T>

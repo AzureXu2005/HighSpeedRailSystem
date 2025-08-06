@@ -26,8 +26,8 @@ class Seat {
 		void SetSeatNo(string seat_no);
 		void SetSeatType(string seat_type);
 
-		friend bool operator==(Seat& s1, Seat& s2);
-		friend bool operator!=(Seat& s1, Seat& s2);
+		bool operator==(const Seat& other) const;
+		bool operator!=(const Seat& other) const;
 
 		friend std::istream& operator>>(std::istream& in, Seat& seat);
 		friend std::ostream& operator<<(std::ostream& out, Seat& seat);

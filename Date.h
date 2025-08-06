@@ -38,8 +38,8 @@ public:
 	string Format3();
 
 	//Overloaded comparison operators
-	friend bool operator==(Date date1, Date date2);
-	friend bool operator!=(Date date1, Date date2);
+	bool operator==(const Date& other) const;
+	bool operator!=(const Date& other) const;
 
 	//Overloaded standard input operator>> and operator<< for I/O operations of Date object
 	friend std::istream& operator>>(std::istream& in, Date& date);

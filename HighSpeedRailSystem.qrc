@@ -7,5 +7,7 @@
         <file>image/railway.png</file>
         <file>image/railway2.png</file>
         <file>image/success.png</file>
+        <file>image/user.png</file>
+        <file>image/boy.png</file>
     </qresource>
 </RCC>

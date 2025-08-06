@@ -28,8 +28,8 @@ class Train {
 		void SetStartStation(int start);
 		void SetEndStation(int end);
 
-		friend bool operator==(Train& t1, Train& t2);
-		friend bool operator!=(Train& t1, Train& t2);
+		bool operator==(const Train& other) const;
+		bool operator!=(const Train& other) const;
 
 		friend std::istream& operator>>(std::istream& in, Train& train);
 		friend std::ostream& operator<<(std::ostream& out, Train& train);

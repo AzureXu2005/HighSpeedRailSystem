@@ -38,6 +38,19 @@ void Station::SetName(string name)
 	this->name = name;
 }
 
+bool Station::operator==(const Station& other) const
+{
+	if (this->station_id == other.station_id) return true;
+	else return false;
+}
+
+bool Station::operator!=(const Station& other) const
+{
+	if (this->station_id != other.station_id) return true;
+	else return false;
+}
+
+
 
 std::istream& operator>>(std::istream& in, Station& station)
 {

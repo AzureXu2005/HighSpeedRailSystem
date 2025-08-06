@@ -61,15 +61,15 @@ void Seat::SetSeatType(string seat_type)
 	this->seat_type = seat_type;
 }
 
-bool operator==(Seat& s1, Seat& s2)
+bool Seat::operator==(const Seat& other) const
 {
-	if (s1.seat_id == s2.seat_id) return true;
+	if (this->seat_id == other.seat_id) return true;
 	else return false;
 }
 
-bool operator!=(Seat& s1, Seat& s2)
+bool Seat::operator!=(const Seat& other) const
 {
-	if (s1.seat_id != s2.seat_id) return true;
+	if (this->seat_id != other.seat_id) return true;
 	else return false;
 }
 

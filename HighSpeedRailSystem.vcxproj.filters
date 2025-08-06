@@ -70,6 +70,9 @@
     <ClCompile Include="RegisterInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TicketPurchasingInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Users.h">
@@ -107,12 +110,18 @@
     <QtUic Include="RegisterInterface.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="TicketPurchasingInterface.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginInterfaceW.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="RegisterInterface.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TicketPurchasingInterface.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

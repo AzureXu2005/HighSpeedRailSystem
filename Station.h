@@ -17,6 +17,9 @@ class Station {
 		void SetStationId(int station_id);
 		void SetName(string name);
 
+		bool operator==(const Station& other) const;
+		bool operator!=(const Station& other) const;
+
 		friend std::istream& operator>>(std::istream& in, Station& station);
 		friend std::ostream& operator<<(std::ostream& out, Station& station);
 };

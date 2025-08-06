@@ -85,7 +85,7 @@ void RegisterInterface::Register()
 			u.SetPassword(password);
 			u.SetRole("customer");
 			if (p_UsersSet->push_back(u)) {
-				QMessageBox SuccessBox;
+				QMessageBox SuccessBox(this);
 				SuccessBox.setWindowTitle("Success");
 				SuccessBox.setText("注册成功！");
 				QPixmap iconPixmap(":/new/prefix1/image/success.png");	//调整图标大小

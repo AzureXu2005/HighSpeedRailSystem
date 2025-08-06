@@ -115,15 +115,15 @@ void Order::SetStatus(string status)
 	this->status = status;
 }
 
-bool operator==(Order& o1, Order& o2)
+bool Order::operator==(const Order& other) const
 {
-	if (o1.order_id == o2.order_id) return true;
+	if (this->order_id == other.order_id) return true;
 	else return false;
 }
 
-bool operator!=(Order& o1, Order& o2)
+bool Order::operator!=(const Order& other) const
 {
-	if (o1.order_id != o2.order_id) return true;
+	if (this->order_id != other.order_id) return true;
 	else return false;
 }
 

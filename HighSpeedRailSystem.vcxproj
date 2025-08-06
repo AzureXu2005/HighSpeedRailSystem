@@ -99,6 +99,7 @@
     <ClCompile Include="Seat.cpp" />
     <ClCompile Include="Station.cpp" />
     <ClCompile Include="TemplateSet.cpp" />
+    <ClCompile Include="TicketPurchasingInterface.cpp" />
     <ClCompile Include="Train.cpp" />
     <ClCompile Include="TrainSchedule.cpp" />
     <ClCompile Include="Users.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="main.cpp" />
     <QtUic Include="LoginInterface.ui" />
     <QtUic Include="RegisterInterface.ui" />
+    <QtUic Include="TicketPurchasingInterface.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Date.h" />
@@ -118,6 +120,7 @@
     <ClInclude Include="Seat.h" />
     <ClInclude Include="Station.h" />
     <ClInclude Include="TemplateSet.h" />
+    <QtMoc Include="TicketPurchasingInterface.h" />
     <ClInclude Include="Train.h" />
     <ClInclude Include="TrainSchedule.h" />
     <ClInclude Include="Users.h" />

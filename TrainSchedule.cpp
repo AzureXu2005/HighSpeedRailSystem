@@ -82,15 +82,15 @@ void TrainSchedule::SetDepartTime(Date depart_time)
 	this->depart_time = depart_time;
 }
 
-bool operator==(TrainSchedule& t1, TrainSchedule& t2)
+bool TrainSchedule::operator==(const TrainSchedule& other) const
 {
-	if (t1.schedule_id == t2.schedule_id) return true;
+	if (this->schedule_id == other.schedule_id) return true;
 	else return false;
 }
 
-bool operator!=(TrainSchedule& t1, TrainSchedule& t2)
+bool TrainSchedule::operator!=(const TrainSchedule& other) const
 {
-	if (t1.schedule_id != t2.schedule_id) return true;
+	if (this->schedule_id != other.schedule_id) return true;
 	else return false;
 }
 
