@@ -419,6 +419,9 @@ QPushButton:pressed {
     border-right: 1px solid #dddddd;
 }</string>
       </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+      </property>
       <column>
        <property name="text">
         <string>订单编号</string>

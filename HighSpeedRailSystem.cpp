@@ -1,6 +1,7 @@
 ﻿#include "HighSpeedRailSystem.h"
 #include "qmessagebox.h"
 #include "qscreen.h"
+#include "queue"
 
 HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_set, QWidget *parent)
     : QMainWindow(parent)
@@ -25,6 +26,7 @@ HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_s
         });
     QObject::connect(ui.pushButtonSearch, &QPushButton::clicked, [=] {
         ui.stackedWidgetUser->setCurrentIndex(1);
+        OrdersTableSetting();
         });
     QObject::connect(ui.pushButtonInfor, &QPushButton::clicked, [=] {
         ui.stackedWidgetUser->setCurrentIndex(2);
@@ -39,6 +41,7 @@ HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_s
     QObject::connect(ui.pushButtonLogOff, &QPushButton::clicked, [=] {
         LogOff();
         });
+    this->OrderEditChanged();
 }
 
 HighSpeedRailSystem::~HighSpeedRailSystem()
@@ -56,8 +59,10 @@ void HighSpeedRailSystem::LoadFromTxtFile()
 
 void HighSpeedRailSystem::TicketsTableSetting()
 {
+    ui.dateEditDepart->setDate(QDate::currentDate());
     QTableWidget* ticket_table = ui.tableWidgetTickets;
     int train_count = train_set.size();
+    ticket_table->setCurrentCell(-1, -1);
     ticket_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ticket_table->setRowCount(train_count);
     
@@ -239,3 +244,167 @@ void HighSpeedRailSystem::LogOff()
     }
 }
 
+void HighSpeedRailSystem::OrdersTableSetting()
+{
+    QTableWidget* order_table = ui.tableWidgetOrder;
+    int order_count = 0;
+    int col_count = ui.tableWidgetOrder->columnCount();
+    ui.dateEditBegin->setDate(QDate::currentDate().addDays(-60));
+    ui.dateEditEnd->setDate(QDate::currentDate().addDays(7));
+    ui.comboBox->setCurrentIndex(0);
+    queue<int> user_order_queue;
+    int idx_ = 0;
+    for (deque<Order>::iterator p = order_set.begin(); p != order_set.end(); p++, idx_++) {
+        if (p->GetUserId() == mp_user->GetUserId()) {
+            user_order_queue.push(idx_);
+            order_count++;
+        }
+    }
+    order_table->setCurrentCell(-1, -1);
+    order_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    order_table->setRowCount(order_count);
+    for (int row = 0; row < order_count; row++) {
+        int idx = user_order_queue.front();
+        user_order_queue.pop();
+        QString order_id = QString::number(order_set[idx].GetOrderId());
+        QString train_code;
+        Date d = order_set[idx].GetTravelDate();
+        QString travel_date = d.Format().c_str();
+        QDate travel_qdate(d.GetYear(), d.GetMonth(), d.GetDay());
+        QString start_station;
+        QString end_station;
+        QString start_time;
+        QString end_time;
+        QString seat_no;
+        QString seat_type;
+        QString fare;
+        QString booking_time = order_set[idx].GetOrderTime().Format2().c_str();
+        QString status;
+        int train_id = order_set[idx].GetTrainId();
+        int start_station_id = order_set[idx].GetStartStationId();
+        int end_station_id = order_set[idx].GetEndStationId();
+        int seat_id = order_set[idx].GetSeatId();
+        int start_stop_order = 0;
+        int end_stop_order = 0;
+        for (deque<Train>::iterator p = train_set.begin(); p != train_set.end(); p++) {
+            if (p->GetTrainId() == train_id) {
+                train_code = p->GetTrainCode().c_str();
+                break;
+            }
+        }
+        for (deque<Station>::iterator p = station_set.begin(); p != station_set.end(); p++) {
+            if (start_station_id == p->GetStationId()) {
+                start_station = p->GetName().c_str();
+            }
+            if (end_station_id == p->GetStationId()) {
+                end_station = p->GetName().c_str();
+            }
+        }
+        for (deque<TrainSchedule>::iterator p = train_schedule_set.begin(); p != train_schedule_set.end(); p++) {
+            if (train_id == p->GetTrainId()) {
+                if (start_station_id == p->GetStationId()) {
+                    start_time = p->GetDepartTime().Format3().c_str();
+                    start_stop_order = p->GetStopOrder();
+                }
+                if (end_station_id == p->GetStationId()) {
+                    end_time = p->GetArriveTime().Format3().c_str();
+                    end_stop_order = p->GetStopOrder();
+                }
+            }
+        }
+        for (deque<Seat>::iterator p = seat_set.begin(); p != seat_set.end(); p++) {
+            if (seat_id == p->GetSeatId()) {
+                seat_no = p->GetSeatNo().c_str();
+                seat_type = p->GetSeatType().c_str();
+            }
+        }
+        if (seat_type == "商务") fare = QString::number(150 * (end_stop_order - start_stop_order));
+        else if (seat_type == "一等") fare = QString::number(90 * (end_stop_order - start_stop_order));
+        else fare = QString::number(50 * (end_stop_order - start_stop_order));
+        if (order_set[idx].GetStatus() == "booked") status = "已预定";
+        else if (order_set[idx].GetStatus() == "canceled") status = "已取消";
+        else if (order_set[idx].GetStatus() == "completed") status = "已完成";
+
+        order_table->setItem(row, 0, new QTableWidgetItem(order_id));
+        order_table->setItem(row, 1, new QTableWidgetItem(train_code));
+        order_table->setItem(row, 2, new QTableWidgetItem(travel_date));
+        order_table->setItem(row, 3, new QTableWidgetItem(start_station));
+        order_table->setItem(row, 4, new QTableWidgetItem(end_station));
+        order_table->setItem(row, 5, new QTableWidgetItem(start_time));
+        order_table->setItem(row, 6, new QTableWidgetItem(end_time));
+        order_table->setItem(row, 7, new QTableWidgetItem(seat_no));
+        order_table->setItem(row, 8, new QTableWidgetItem(seat_type));
+        order_table->setItem(row, 9, new QTableWidgetItem(fare));
+        order_table->setItem(row, 10, new QTableWidgetItem(booking_time));
+        order_table->setItem(row, 11, new QTableWidgetItem(status));
+
+        if (travel_qdate<ui.dateEditBegin->date() || travel_qdate>ui.dateEditEnd->date() || status != "已预定") {
+            order_table->setRowHidden(row, true);
+        }
+        else {
+            order_table->setRowHidden(row, false);
+        }
+
+        // 设置行列居中
+        for (int col = 0; col < col_count; col++) {
+            ui.tableWidgetOrder->item(row, col)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        }
+    }
+}
+
+void HighSpeedRailSystem::OrderEditChanged()
+{
+    QObject::connect(ui.dateEditBegin, &QDateEdit::dateChanged, this, &HighSpeedRailSystem::OrderFiltering);
+    QObject::connect(ui.dateEditEnd, &QDateEdit::dateChanged, this, &HighSpeedRailSystem::OrderFiltering);
+    QObject::connect(ui.comboBox, &QComboBox::currentIndexChanged, this, &HighSpeedRailSystem::OrderFiltering);
+    QObject::connect(ui.pushButtonRefund, &QPushButton::clicked, this, &HighSpeedRailSystem::RefundOperation);
+}
+
+void HighSpeedRailSystem::OrderFiltering()
+{
+    int col_travel_date = 2;
+    int col_status = 11;
+    QDate dateEditBegin = ui.dateEditBegin->date();
+    QDate dateEditEnd = ui.dateEditEnd->date();
+    QString status = ui.comboBox->currentText();
+    for (int row = 0; row < ui.tableWidgetOrder->rowCount(); row++) {
+        QString date_item = ui.tableWidgetOrder->item(row, col_travel_date)->text();
+        QString status_item = ui.tableWidgetOrder->item(row, col_status)->text();
+        Date D_date;
+        D_date(date_item.toStdString());
+        QDate Q_date(D_date.GetYear(), D_date.GetMonth(), D_date.GetDay());
+        if (Q_date < dateEditBegin || Q_date > dateEditEnd || status != status_item) {
+            ui.tableWidgetOrder->setRowHidden(row, true);
+        }
+        else {
+            ui.tableWidgetOrder->setRowHidden(row, false);
+        }
+    }
+}
+
+void HighSpeedRailSystem::RefundOperation()
+{
+    QTableWidget* order_table = ui.tableWidgetOrder;
+    if (order_table->currentRow() == -1) {
+        QMessageBox::warning(this, "警告", "请先选中要退票的订单的行！");
+    }
+    else {
+        int order_id = 0;
+        int col_status = 11;
+        order_id = order_table->item(order_table->currentRow(), 0)->text().toInt();
+        for (deque<Order>::iterator p = order_set.begin(); p != order_set.end(); p++) {
+            if (p->GetOrderId() == order_id) {
+                p->SetStatus("canceled");
+                break;
+            }
+        }
+        order_table->item(order_table->currentRow(), col_status)->setText("已取消");
+        order_table->setCurrentCell(-1, -1);
+        OrderFiltering();
+    }
+}
+
+void HighSpeedRailSystem::RefreshOrderTable()
+{
+    
+}

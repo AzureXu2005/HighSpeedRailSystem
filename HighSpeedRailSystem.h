@@ -20,9 +20,14 @@ public:
     ~HighSpeedRailSystem();
     void LoadFromTxtFile();
     void TicketsTableSetting();
+    void OrdersTableSetting();
     void LoadUserInformationSetting();
     void CheckInformation();
     void LogOff();
+    void OrderEditChanged();
+    void OrderFiltering();
+    void RefundOperation();
+    void RefreshOrderTable();
     
 public:
     Users* mp_user;
