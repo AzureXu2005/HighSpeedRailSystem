@@ -20,6 +20,8 @@ public:
     ~HighSpeedRailSystem();
     void LoadFromTxtFile();
     void TicketsTableSetting();
+    //void InitFreshTable(QTableWidget* ticket_table, int row, QDate q_depart_date);
+    void refreshTicketsTableInterface();
     void OrdersTableSetting();
     void LoadUserInformationSetting();
     void CheckInformation();
@@ -27,9 +29,15 @@ public:
     void OrderEditChanged();
     void OrderFiltering();
     void RefundOperation();
-    void RefreshOrderTable();
+    void RebookOperation();
+    void RefreshTicketTable(string on_station, string off_station, QDate q_depart_date);
+    void TicketSearchPretreatment();
+    void SearchTickets();
+    void onBookingButtonClicked();
+    void UpdateCompleted();
     
 public:
+    int init_table;
     Users* mp_user;
     TemplateSet<Users>* mp_user_set;
     TemplateSet<Train> train_set;
@@ -38,9 +46,12 @@ public:
     TemplateSet<Station> station_set;
     TemplateSet<Seat> seat_set;
 
+public slots:
+    void CompletedAndExit();
 
 private:
     Ui::HighSpeedRailSystemClass ui;
+
 
 };
 

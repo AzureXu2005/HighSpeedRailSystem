@@ -329,6 +329,58 @@ QPushButton:pressed {
         <string>查询</string>
        </property>
       </widget>
+      <widget class="QLabel" name="labelRebook">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>10</y>
+         <width>221</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>当前为改签界面，如需退出请点击退出按钮。</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButtonExitRebook">
+       <property name="geometry">
+        <rect>
+         <x>900</x>
+         <y>10</y>
+         <width>31</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+    background-color: rgb(243, 243, 243);
+}
+
+QPushButton:hover {
+    background-color: rgb(255,255,255);
+}</string>
+       </property>
+       <property name="text">
+        <string>退出</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QTableWidget" name="tableWidgetTickets">
       <property name="geometry">
