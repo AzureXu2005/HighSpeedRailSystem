@@ -9,5 +9,9 @@
         <file>image/success.png</file>
         <file>image/user.png</file>
         <file>image/boy.png</file>
+        <file>image/add.png</file>
+        <file>image/delete.png</file>
+        <file>image/modify.png</file>
+        <file>image/see.png</file>
     </qresource>
 </RCC>

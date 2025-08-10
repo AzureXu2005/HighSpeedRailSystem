@@ -21,10 +21,18 @@ LoginInterfaceW::LoginInterfaceW(TemplateSet<Users>* p_users, QDialog *parent)
 	QObject::connect(ui->pushButtonSubmit, &QPushButton::clicked, [=] {
 		Users* current_user = NULL;
 		if (this->LogOn(current_user)) {
-			HighSpeedRailSystem* window = new HighSpeedRailSystem(current_user, p_UsersSet);
-			window->setAttribute(Qt::WA_DeleteOnClose);
-			window->show();
-			this->close();
+			if (change_tag % 2 == 0) {
+				HighSpeedRailSystem* window = new HighSpeedRailSystem(current_user, p_UsersSet);
+				window->setAttribute(Qt::WA_DeleteOnClose);
+				window->show();
+				this->close();
+			}
+			else {
+				AdministratorMainWindow* admin_window = new AdministratorMainWindow(current_user, p_UsersSet);
+				admin_window->setAttribute(Qt::WA_DeleteOnClose);
+				admin_window->show();
+				this->close();
+			}
 		}
 		});
 	QObject::connect(ui->pushButtonRegister, &QPushButton::clicked, [=] {

@@ -35,6 +35,9 @@ public:
     void SearchTickets();
     void onBookingButtonClicked();
     void UpdateCompleted();
+
+public slots:
+    void CompletedAndExit();
     
 public:
     int init_table;
@@ -45,9 +48,6 @@ public:
     TemplateSet<Order> order_set;
     TemplateSet<Station> station_set;
     TemplateSet<Seat> seat_set;
-
-public slots:
-    void CompletedAndExit();
 
 private:
     Ui::HighSpeedRailSystemClass ui;

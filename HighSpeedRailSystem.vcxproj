@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AdministratorMainWindow.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="LoginInterfaceW.cpp" />
     <ClCompile Include="Order.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="TrainSchedule.cpp" />
     <ClCompile Include="Users.cpp" />
     <QtRcc Include="HighSpeedRailSystem.qrc" />
+    <QtUic Include="AdministratorMainWindow.ui" />
     <QtUic Include="HighSpeedRailSystem.ui" />
     <QtMoc Include="HighSpeedRailSystem.h" />
     <ClCompile Include="HighSpeedRailSystem.cpp" />
@@ -113,6 +115,7 @@
     <QtUic Include="TicketPurchasingInterface.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AdministratorMainWindow.h" />
     <ClInclude Include="Date.h" />
     <QtMoc Include="LoginInterfaceW.h" />
     <ClInclude Include="Order.h" />

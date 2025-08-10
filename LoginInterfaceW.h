@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QObject>
 #include "ui_LoginInterface.h"
 #include "Users.h"
@@ -7,6 +6,8 @@
 #include "qstring.h"
 #include "HighSpeedRailSystem.h"
 #include "RegisterInterface.h"
+#include "AdministratorMainWindow.h"
+
 
 class LoginInterfaceW  : public QDialog
 {
