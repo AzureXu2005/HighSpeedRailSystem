@@ -73,6 +73,16 @@ TicketPurchasingInterface::~TicketPurchasingInterface()
 	delete ui;
 }
 
+static void showSuccessBox(QWidget* parent)
+{
+	QMessageBox SuccessBox(parent);
+	SuccessBox.setWindowTitle("Success");
+	SuccessBox.setText("您的车票已经预定好了，可以到订单页面查看详情。");
+	QPixmap iconPixmap(":/new/prefix1/image/success.png");	//调整图标大小
+	iconPixmap = iconPixmap.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+	SuccessBox.setIconPixmap(iconPixmap);
+	SuccessBox.exec();
+}
 
 void TicketPurchasingInterface::PurchasingTicket()
 {
@@ -113,7 +123,7 @@ void TicketPurchasingInterface::PurchasingTicket()
 	}
 	new_order.SetSeatId(seat_id);
 	order_set->push_back(new_order);
-	QMessageBox::information(this, "info", "您的车票已经预定好了，可以到订单页面查看详情。");
+	showSuccessBox(this);
 	emit Purchased();
 	this->close();
 }
@@ -164,3 +174,4 @@ int TicketPurchasingInterface::chooseSeat(int train_id, string seat_type, Date& 
 	}
 	return seat_id;
 }
+

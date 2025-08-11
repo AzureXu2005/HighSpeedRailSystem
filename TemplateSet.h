@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "iostream"
 #include "fstream"
 #include "string"
@@ -80,7 +80,7 @@ int TemplateSet<T>::ReadFromFile(const char filename[])
 		return -1;
 	}
 
-	// ¶ÁÈ¡µÚÒ»ĞĞµ«²»´æ´¢£¨Ìø¹ı£©
+	// è¯»å–ç¬¬ä¸€è¡Œä½†ä¸å­˜å‚¨ï¼ˆè·³è¿‡ï¼‰
 	string firstLine;
 	getline(fin, firstLine);
 
@@ -99,24 +99,24 @@ template<typename T>
 int TemplateSet<T>::WriteToFile(const char filename[]) {
 	ifstream fin(filename);
 	if (!fin.is_open()) {
-		return -1;  // ÎÄ¼ş´ò¿ªÊ§°Ü
+		return -1;  // æ–‡ä»¶æ‰“å¼€å¤±è´¥
 	}
 
-	// ¶ÁÈ¡µÚÒ»ĞĞ²¢±£´æ
+	// è¯»å–ç¬¬ä¸€è¡Œå¹¶ä¿å­˜
 	string firstLine;
 	getline(fin, firstLine);
 	fin.close();
 
-	// ÖØĞÂ´ò¿ªÎÄ¼ş£¬Ğ´ÈëµÚÒ»ĞĞ + ĞÂÊı¾İ£¨´ÓµÚ¶şĞĞ¿ªÊ¼£©
+	// é‡æ–°æ‰“å¼€æ–‡ä»¶ï¼Œå†™å…¥ç¬¬ä¸€è¡Œ + æ–°æ•°æ®ï¼ˆä»ç¬¬äºŒè¡Œå¼€å§‹ï¼‰
 	ofstream fout(filename);
 	if (!fout.is_open()) {
 		return -1;
 	}
 
-	// Ğ´ÈëÔ­Ê¼µÚÒ»ĞĞ
+	// å†™å…¥åŸå§‹ç¬¬ä¸€è¡Œ
 	fout << firstLine << endl;
 
-	// ´ÓµÚ¶şĞĞ¿ªÊ¼Ğ´ÈëĞÂÊı¾İ
+	// ä»ç¬¬äºŒè¡Œå¼€å§‹å†™å…¥æ–°æ•°æ®
 	int count = 0;
 	for (auto it = this->begin(); it != this->end(); ++it) {
 		fout << *it << endl;

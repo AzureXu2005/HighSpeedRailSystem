@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_4">
      <widget class="QTabWidget" name="tabWidgetMajorAdmin">
@@ -1032,6 +1032,11 @@ border-radius: 4px;         /* 可选：添加圆角 */
       </column>
       <column>
        <property name="text">
+        <string>用户身份证号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>车次</string>
        </property>
       </column>
@@ -1136,7 +1141,7 @@ QPushButton:pressed {
       <widget class="QLabel" name="label_10">
        <property name="geometry">
         <rect>
-         <x>330</x>
+         <x>350</x>
          <y>30</y>
          <width>31</width>
          <height>16</height>
@@ -1154,7 +1159,7 @@ QPushButton:pressed {
       <widget class="QComboBox" name="comboBoxME">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>390</x>
          <y>20</y>
          <width>111</width>
          <height>31</height>
@@ -1231,7 +1236,7 @@ QPushButton:pressed {
         <rect>
          <x>110</x>
          <y>20</y>
-         <width>191</width>
+         <width>221</width>
          <height>31</height>
         </rect>
        </property>
@@ -1239,7 +1244,7 @@ QPushButton:pressed {
         <string/>
        </property>
        <property name="placeholderText">
-        <string>请输入用户的身份证号</string>
+        <string>请输入用户的身份证号（回车搜索）</string>
        </property>
       </widget>
      </widget>

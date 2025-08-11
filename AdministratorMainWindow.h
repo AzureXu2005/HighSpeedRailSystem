@@ -32,10 +32,28 @@ public:
     void RefreshScheduleTable();
     void ScheduleSearch();
     void onClickedScheduleOperation();
+    void SeatTableSetting();
+    void RefreshSeatTable();
+    void SeatSearch();
+    void onClickedSeatOperation();
+    void OrdersTableSetting();
+    void OrderFiltering();
+    void OrderEditChanged();
+    void RefundOperation();
+    void RebookOperation();
+    void SearchTickets();
+    void RefreshTicketTable(string on_station, string off_station, QDate q_depart_date);
+    void onBookingButtonClicked();
+    void UpdateCompleted();
+    void TicketSearchPretreatment();
+    void ExitRebookDlg();
 
-
+public slots:
+    void CompletedAndExit();
 
 public:
+    int rebook_table;
+    Users* mp_admin;
     Users* mp_user;
     TemplateSet<Users>* mp_user_set;
     TemplateSet<Train> train_set;

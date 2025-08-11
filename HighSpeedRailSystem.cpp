@@ -58,8 +58,8 @@ HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_s
         if (init_table == 2) {
             QMessageBox::information(this, "info", "您已退出改签界面。");
             init_table = 0;
-            ui.lineEditGetOn->setReadOnly(true);
-            ui.lineEditGetOff->setReadOnly(true);
+            ui.lineEditGetOn->setReadOnly(false);
+            ui.lineEditGetOff->setReadOnly(false);
             ui.labelRebook->hide();
             ui.pushButtonExitRebook->hide();
         }
@@ -71,8 +71,8 @@ HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_s
         if (init_table == 2) {
             QMessageBox::information(this, "info", "您已退出改签界面。");
             init_table = 0;
-            ui.lineEditGetOn->setReadOnly(true);
-            ui.lineEditGetOff->setReadOnly(true);
+            ui.lineEditGetOn->setReadOnly(false);
+            ui.lineEditGetOff->setReadOnly(false);
             ui.labelRebook->hide();
             ui.pushButtonExitRebook->hide();
         }
@@ -512,11 +512,11 @@ void HighSpeedRailSystem::RebookOperation()
     QTableWidget* order_table = ui.tableWidgetOrder;
     int current_row = order_table->currentRow();
     if (current_row == -1) {
-        QMessageBox::warning(this, "警告", "请先选中要退票的订单的行！");
+        QMessageBox::warning(this, "警告", "请先选中要改签的订单的行！");
         return;
     }
     else if (order_table->item(current_row, 11)->text() != "已预定") {
-        QMessageBox::warning(this, "警告", "已完成或已取消的车票不能退票。");
+        QMessageBox::warning(this, "警告", "已完成或已取消的车票不能改签。");
         return;
     }
     else {
@@ -663,7 +663,7 @@ void HighSpeedRailSystem::RefreshTicketTable(string on_station, string off_stati
         ticket_table->setItem(row, 5, new QTableWidgetItem(business_class));
         ticket_table->setItem(row, 6, new QTableWidgetItem(first_class));
         ticket_table->setItem(row, 7, new QTableWidgetItem(second_class));
-        QPushButton* bookingItemButton = new QPushButton("预订");
+        QPushButton* bookingItemButton = new QPushButton(init_table == 2 ? "改签" : "预约");
         bookingItemButton->setProperty("row", row);
         bool no_seat = business_class.toInt() == 0 && first_class.toInt() == 0 && second_class.toInt() == 0;
         bool date_error = ui.dateEditDepart->date() < QDate::currentDate() || ui.dateEditDepart->date() > QDate::currentDate().addDays(15);
