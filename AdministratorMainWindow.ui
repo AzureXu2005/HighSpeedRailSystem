@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page_4">
      <widget class="QTabWidget" name="tabWidgetMajorAdmin">
@@ -1372,6 +1372,9 @@ QLineEdit:hover:!focus {
     border-bottom: 1px solid #dddddd;
     border-right: 1px solid #dddddd;
 }</string>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
       </property>
       <column>
        <property name="text">

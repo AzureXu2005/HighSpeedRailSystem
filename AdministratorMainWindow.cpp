@@ -40,6 +40,7 @@ AdministratorMainWindow::AdministratorMainWindow(Users* user, TemplateSet<Users>
         if (rebook_table == 1) {
             ExitRebookDlg();
         }
+        UsersTableSetting();
         ui.stackedWidgetAdmin->setCurrentIndex(2);
         });
     QObject::connect(ui.pushButtonReBooking, &QPushButton::clicked, [=] {
@@ -79,6 +80,8 @@ AdministratorMainWindow::AdministratorMainWindow(Users* user, TemplateSet<Users>
     onClickedScheduleOperation();
     onClickedSeatOperation();
     OrderEditChanged();
+    QObject::connect(ui.pushButtonUserSearch, &QPushButton::clicked, this, &AdministratorMainWindow::UsersSearch);
+    QObject::connect(ui.lineEditUser, &QLineEdit::returnPressed, this, &AdministratorMainWindow::UsersSearch);
 
 }
 
@@ -897,4 +900,247 @@ void AdministratorMainWindow::ExitRebookDlg()
     ui.pushButtonReBooking->hide();
     ui.lineEditGetOn->setReadOnly(false);
     ui.lineEditGetOff->setReadOnly(false);
+}
+
+void AdministratorMainWindow::UsersTableSetting()
+{
+    QTableWidget* user_table = ui.tableWidgetUsers;
+    user_table->setCurrentCell(-1, -1);
+    RefreshUsersTable();
+}
+
+void AdministratorMainWindow::RefreshUsersTable()
+{
+    QTableWidget* user_table = ui.tableWidgetUsers;
+    int user_count = mp_user_set->size() - 1;
+    int col_count = 7;
+    user_table->setRowCount(user_count);
+    for (int row = 0; row < user_count; row++) {
+        int idx = row + 1;
+        QString user_id = QString::number(mp_user_set->at(idx).GetUserId());
+        QString username = mp_user_set->at(idx).GetUsername().c_str();
+        QString displayname = mp_user_set->at(idx).GetDisplayName().c_str();
+        QString password = mp_user_set->at(idx).GetPassword().c_str();
+        QString phone = mp_user_set->at(idx).GetPhone().c_str();
+        QString id_card = mp_user_set->at(idx).GetIdCard().c_str();
+        QString status;
+        string role = mp_user_set->at(idx).GetRole();
+        if (role == "customer") status = "正常";
+        else if (role == "customerX") status = "已锁定";
+
+        user_table->setItem(row, 0, new QTableWidgetItem(user_id));
+        user_table->setItem(row, 1, new QTableWidgetItem(username));
+        user_table->setItem(row, 2, new QTableWidgetItem(displayname));
+        user_table->setItem(row, 3, new QTableWidgetItem(password));
+        user_table->setItem(row, 4, new QTableWidgetItem(phone));
+        user_table->setItem(row, 5, new QTableWidgetItem(id_card));
+        user_table->setItem(row, 6, new QTableWidgetItem(status));
+
+        QPushButton* ResetPasswordButton = new QPushButton("🔑重置密码");
+        ResetPasswordButton->setProperty("row", row);
+        ResetPasswordButton->setProperty("isResetting", false);
+        QString resetPasswordStyle = R"(
+            QPushButton {
+                margin: 2px 8px;
+                border: none;
+                border-radius: 3px;
+                background-color: rgb(0, 170, 255);
+                color: white;
+            }
+            QPushButton:hover {
+                background-color: #2980b9;
+            }
+            QPushButton:pressed {
+            	background-color: #1a5276;
+            })";
+        ResetPasswordButton->setStyleSheet(resetPasswordStyle);
+        user_table->setCellWidget(row, 7, ResetPasswordButton);
+
+        QPushButton* ResetStatusButton = new QPushButton(status == "正常" ? "🔒锁定" : "🔓解锁");
+        QString ResetStatusStyle0;
+        QString ResetStatusStyle1;
+        ResetStatusButton->setProperty("row", row);
+        if (status == "正常") {
+            ResetStatusStyle0 = R"(
+                QPushButton {
+                    margin: 2px 8px;
+                    border: none;
+                    border-radius: 3px;
+	                background-color: rgb(255, 170, 127);
+                    color: white;
+                }
+
+                QPushButton:hover {
+                    background-color: #e67e22;
+                }
+                QPushButton:pressed {
+                    background-color: #d35400;
+                })";
+            ResetStatusButton->setStyleSheet(ResetStatusStyle0);
+        }
+        else {
+            ResetStatusStyle1 = R"(
+                QPushButton {
+                    margin: 2px 8px;
+                    border: none;
+                    border-radius: 3px;
+	                background-color: #27ae60;
+                    color: white;
+                }
+
+                QPushButton:hover {
+                    background-color: #2ecc71;
+                }
+                QPushButton:pressed {
+                    background-color: #16a085;
+                })";
+            ResetStatusButton->setStyleSheet(ResetStatusStyle0);
+        }
+        user_table->setCellWidget(row, 8, ResetStatusButton);
+
+        // 在创建按钮后添加连接
+        connect(ResetPasswordButton, &QPushButton::clicked, this, &AdministratorMainWindow::onResetPasswordClicked);
+        connect(ResetStatusButton, &QPushButton::clicked, this, &AdministratorMainWindow::onToggleLockClicked);
+
+        user_table->setRowHidden(row, false);
+        // 设置行列居中
+        for (int col = 0; col < col_count; col++) {
+            user_table->item(row, col)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            QTableWidgetItem* passwordItem = user_table->item(row, col);
+            passwordItem->setFlags(passwordItem->flags() & ~Qt::ItemIsEditable);
+        }
+    }
+}
+
+void AdministratorMainWindow::UsersSearch()
+{
+    QTableWidget* user_table = ui.tableWidgetUsers;
+    if (ui.lineEditUser->text().isEmpty()) {
+        for (int row = 0; row < user_table->rowCount(); row++) {
+            user_table->setRowHidden(row, false);
+        }
+    }
+    else {
+        QString search_text = ui.lineEditUser->text();
+        for (int row = 0; row < user_table->rowCount(); row++) {
+            if (search_text == user_table->item(row, 5)->text()) {
+                user_table->setRowHidden(row, false);
+            }
+            else {
+                user_table->setRowHidden(row, true);
+            }
+        }
+    }
+}
+
+void AdministratorMainWindow::onResetPasswordClicked() {
+    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    if (!button) return;
+
+    int row = button->property("row").toInt();
+    bool isResetting = button->property("isResetting").toBool();
+    QTableWidget* table = ui.tableWidgetUsers;
+
+    if (!isResetting) {
+        // 进入修改模式：密码可编辑，按钮文字变“确认修改”
+        QTableWidgetItem* passwordItem = table->item(row, 3); 
+        passwordItem->setFlags(passwordItem->flags() | Qt::ItemIsEditable);
+        table->editItem(passwordItem);
+
+        button->setText("✅确认修改");
+        button->setProperty("isResetting", true);
+    }
+    else {
+        // 确认修改：密码不可编辑，按钮文字恢复“重置密码”
+        QTableWidgetItem* passwordItem = table->item(row, 3);
+
+        // 实际更新密码到数据库（需补充你的逻辑）
+        string newPassword = passwordItem->text().toStdString();
+        if (newPassword.empty()) {
+            QMessageBox::warning(this, "警告", "密码不能为空。");
+            table->editItem(passwordItem);
+            return;
+        }
+        passwordItem->setFlags(passwordItem->flags() & ~Qt::ItemIsEditable);
+        int userId = table->item(row, 0)->text().toInt();
+        for (deque<Users>::iterator p = mp_user_set->begin(); p != mp_user_set->end(); p++) {
+            if (userId == p->GetUserId()) {
+                p->SetPassword(newPassword);
+                break;
+            }
+        }
+
+        button->setText("🔑重置密码");
+        button->setProperty("isResetting", false);
+    }
+}
+
+void AdministratorMainWindow::onToggleLockClicked() {
+    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    if (!button) return;
+
+    int row = button->property("row").toInt();
+    QTableWidget* table = ui.tableWidgetUsers;
+    QTableWidgetItem* statusItem = table->item(row, 6);
+
+    if (statusItem->text() == "正常") {
+        // 锁定用户
+        statusItem->setText("已锁定");
+        button->setText("🔓解锁");
+        button->setStyleSheet(R"(
+            QPushButton {
+                margin: 2px 8px;
+                border: none;
+                border-radius: 3px;
+	            background-color: #27ae60;
+                color: white;
+            }
+
+            QPushButton:hover {
+                background-color: #2ecc71;
+            }
+            QPushButton:pressed {
+                background-color: #16a085;
+            }
+        )");
+
+        // 更新数据库（需补充你的逻辑）
+        int userId = table->item(row, 0)->text().toInt();
+        for (deque<Users>::iterator p = mp_user_set->begin(); p != mp_user_set->end(); p++) {
+            if (userId == p->GetUserId()) {
+                p->SetRole("customerX");
+                break;
+            }
+        }
+    }
+    else {
+        // 解锁用户
+        statusItem->setText("正常");
+        button->setText("🔒锁定");
+        button->setStyleSheet(R"(
+            QPushButton {
+                margin: 2px 8px;
+                border: none;
+                border-radius: 3px;
+	            background-color: rgb(255, 170, 127);
+                color: white;
+            }
+
+            QPushButton:hover {
+                background-color: #e67e22;
+            }
+            QPushButton:pressed {
+                background-color: #d35400;
+            }
+        )");
+
+        // 更新数据库
+        int userId = table->item(row, 0)->text().toInt();
+        for (deque<Users>::iterator p = mp_user_set->begin(); p != mp_user_set->end(); p++) {
+            if (userId == p->GetUserId()) {
+                p->SetRole("customer");
+                break;
+            }
+        }
+    }
 }

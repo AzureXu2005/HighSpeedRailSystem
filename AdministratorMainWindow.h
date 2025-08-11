@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include "ui_AdministratorMainWindow.h"
@@ -45,11 +45,15 @@ public:
     void RefreshTicketTable(string on_station, string off_station, QDate q_depart_date);
     void onBookingButtonClicked();
     void UpdateCompleted();
-    void TicketSearchPretreatment();
     void ExitRebookDlg();
+    void UsersTableSetting();
+    void RefreshUsersTable();
+    void UsersSearch();
 
 public slots:
     void CompletedAndExit();
+    void onResetPasswordClicked();  // 处理密码重置/确认修改
+    void onToggleLockClicked();     // 处理锁定/解锁
 
 public:
     int rebook_table;

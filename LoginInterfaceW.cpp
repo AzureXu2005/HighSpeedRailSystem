@@ -83,6 +83,10 @@ bool LoginInterfaceW::LogOn(Users*& current_user)
 		user_p++;
 		while (user_p != p_UsersSet->end()) {
 			if (name == user_p->GetDisplayName() && secret == user_p->GetPassword()) {
+				if (user_p->GetRole() == "customerX") {
+					QMessageBox::information(this, "提示", "您的账户已被管理员锁定，请联系管理员解锁。");
+					return false;
+				}
 				current_user = &(*user_p);
 				return true;
 			}
