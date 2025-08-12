@@ -95,6 +95,7 @@
     <ClCompile Include="AdministratorMainWindow.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="LoginInterfaceW.cpp" />
+    <ClCompile Include="ModifyAndAddInterface.cpp" />
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="RegisterInterface.cpp" />
     <ClCompile Include="Seat.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="HighSpeedRailSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="LoginInterface.ui" />
+    <QtUic Include="ModifyAndAddDlg.ui" />
     <QtUic Include="RegisterInterface.ui" />
     <QtUic Include="TicketPurchasingInterface.ui" />
   </ItemGroup>
@@ -118,6 +120,7 @@
     <QtMoc Include="AdministratorMainWindow.h" />
     <ClInclude Include="Date.h" />
     <QtMoc Include="LoginInterfaceW.h" />
+    <QtMoc Include="ModifyAndAddInterface.h" />
     <ClInclude Include="Order.h" />
     <QtMoc Include="RegisterInterface.h" />
     <ClInclude Include="Seat.h" />

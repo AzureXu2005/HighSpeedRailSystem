@@ -76,6 +76,9 @@
     <ClCompile Include="AdministratorMainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModifyAndAddInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Users.h">
@@ -119,6 +122,9 @@
     <QtUic Include="AdministratorMainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="ModifyAndAddDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginInterfaceW.h">
@@ -131,6 +137,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AdministratorMainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ModifyAndAddInterface.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

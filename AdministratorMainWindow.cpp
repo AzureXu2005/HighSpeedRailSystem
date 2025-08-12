@@ -2,6 +2,7 @@
 #include "qscreen.h"
 #include "qmessagebox.h"
 #include "TicketPurchasingInterface.h"
+#include "ModifyAndAddInterface.h"
 
 
 AdministratorMainWindow::AdministratorMainWindow(Users* user, TemplateSet<Users>* user_set, QWidget* parent)
@@ -20,6 +21,7 @@ AdministratorMainWindow::AdministratorMainWindow(Users* user, TemplateSet<Users>
     rebook_table = 0;
     ui.pushButtonReBooking->hide();
     LoadFromTxtFile();
+    UpdateCompleted();
     ui.stackedWidgetAdmin->setCurrentIndex(0);
     InitTableSetting();
     QObject::connect(ui.pushButtonHSRailAdmin, &QPushButton::clicked, [=] {
@@ -180,6 +182,15 @@ void AdministratorMainWindow::onClickedTrainOperation()
 {
     QObject::connect(ui.pushButtonTrainS, &QPushButton::clicked, this, &AdministratorMainWindow::TrainSearch);
     QObject::connect(ui.lineEditTrainL, &QLineEdit::returnPressed, this, &AdministratorMainWindow::TrainSearch);
+    QObject::connect(ui.pushButtonDeleteT, &QPushButton::clicked, [=] {
+        deleteRecord(0);
+        });
+    QObject::connect(ui.pushButtonModifyT, &QPushButton::clicked, [=] {
+        modifyRecord(0);
+        });
+    QObject::connect(ui.pushButtonAddT, &QPushButton::clicked, [=] {
+        addRecord(0);
+        });
 }
 
 void AdministratorMainWindow::StationTableSetting()
@@ -238,6 +249,15 @@ void AdministratorMainWindow::onClickedStationOperation()
 {
     QObject::connect(ui.pushButtonStationS, &QPushButton::clicked, this, &AdministratorMainWindow::StationSearch);
     QObject::connect(ui.lineEditStationL, &QLineEdit::returnPressed, this, &AdministratorMainWindow::StationSearch);
+    QObject::connect(ui.pushButtonDeleteSta, &QPushButton::clicked, [=] {
+        deleteRecord(1);
+        });
+    QObject::connect(ui.pushButtonModifySta, &QPushButton::clicked, [=] {
+        modifyRecord(1);
+        });
+    QObject::connect(ui.pushButtonAddSta, &QPushButton::clicked, [=] {
+        addRecord(1);
+        });
 }
 
 void AdministratorMainWindow::ScheduleTableSetting()
@@ -256,7 +276,7 @@ void AdministratorMainWindow::ScheduleTableSetting()
 void AdministratorMainWindow::RefreshScheduleTable()
 {
     QTableWidget* schedule_table = ui.tableWidgetSchedule;
-    int schedule_count = station_set.size();
+    int schedule_count = train_schedule_set.size();
     schedule_table->setRowCount(schedule_count);
     int col_count = 6;
     for (int row = 0; row < schedule_count; row++) {
@@ -319,6 +339,15 @@ void AdministratorMainWindow::onClickedScheduleOperation()
 {
     QObject::connect(ui.pushButtonScheduleS, &QPushButton::clicked, this, &AdministratorMainWindow::ScheduleSearch);
     QObject::connect(ui.lineEditScheduleL, &QLineEdit::returnPressed, this, &AdministratorMainWindow::ScheduleSearch);
+    QObject::connect(ui.pushButtonDeleteSche, &QPushButton::clicked, [=] {
+        deleteRecord(2);
+        });
+    QObject::connect(ui.pushButtonModifySche, &QPushButton::clicked, [=] {
+        modifyRecord(2);
+        });
+    QObject::connect(ui.pushButtonAddSche, &QPushButton::clicked, [=] {
+        addRecord(2);
+        });
 }
 
 void AdministratorMainWindow::SeatTableSetting()
@@ -389,6 +418,240 @@ void AdministratorMainWindow::onClickedSeatOperation()
 {
     QObject::connect(ui.pushButtonSeatS, &QPushButton::clicked, this, &AdministratorMainWindow::SeatSearch);
     QObject::connect(ui.lineEditSeatL, &QLineEdit::returnPressed, this, &AdministratorMainWindow::SeatSearch);
+    QObject::connect(ui.pushButtonDeleteSeat, &QPushButton::clicked, [=] {
+        deleteRecord(3);
+        });
+    QObject::connect(ui.pushButtonModifySeat, &QPushButton::clicked, [=] {
+        modifyRecord(3);
+        });
+    QObject::connect(ui.pushButtonAddSeat, &QPushButton::clicked, [=] {
+        addRecord(3);
+        });
+}
+
+void AdministratorMainWindow::addRecord(int kind)
+{
+    if (kind == 0) {
+        QTableWidget* table = ui.tableWidgetTrain;
+        Train new_train;
+        int new_train_id = train_set.back().GetTrainId() + 1;
+        new_train.SetTrainId(new_train_id);
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(1);
+        trainMADlg->TrainAddInit(&new_train, &train_set, &station_set);
+        QObject::connect(trainMADlg, &ModifyAndAddInterface::AddItem, this, [=, &new_train] {
+            train_set.push_back(new_train);
+            showSuccessBox(this);
+            });
+        trainMADlg->exec();
+        RefreshTrainTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 1) {
+        QTableWidget* table = ui.tableWidgetStation;
+        Station new_station;
+        int new_station_id = station_set.back().GetStationId() + 1;
+        new_station.SetStationId(new_station_id);
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(3);
+        trainMADlg->StationAddInit(&new_station, &station_set);
+        QObject::connect(trainMADlg, &ModifyAndAddInterface::AddItem, this, [=, &new_station] {
+            station_set.push_back(new_station);
+            showSuccessBox(this);
+            });
+        trainMADlg->exec();
+        RefreshStationTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 2) {
+        QTableWidget* table = ui.tableWidgetSchedule;
+        TrainSchedule new_schedule;
+        int new_schedule_id = train_schedule_set.back().GetScheduleId() + 1;
+        new_schedule.SetScheduleId(new_schedule_id);
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(5);
+        trainMADlg->ScheduleAddInit(&new_schedule, &train_set, &station_set);
+        QObject::connect(trainMADlg, &ModifyAndAddInterface::AddItem, this, [=, &new_schedule] {
+            train_schedule_set.push_back(new_schedule);
+            showSuccessBox(this);
+            });
+        trainMADlg->exec();
+        RefreshScheduleTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 3) {
+        QTableWidget* table = ui.tableWidgetSeat;
+        Seat new_seat;
+        int new_seat_id = seat_set.back().GetSeatId() + 1;
+        new_seat.SetSeatId(new_seat_id);
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(7);
+        trainMADlg->SeatAddInit(&new_seat, &train_set, &station_set, &seat_set);
+        QObject::connect(trainMADlg, &ModifyAndAddInterface::AddItem, this, [=, &new_seat] {
+            seat_set.push_back(new_seat);
+            showSuccessBox(this);
+            });
+        trainMADlg->exec();
+        RefreshSeatTable();
+        table->setCurrentCell(-1, -1);
+    }
+}
+
+void AdministratorMainWindow::modifyRecord(int kind)
+{
+    if (kind == 0) {
+        QTableWidget* table = ui.tableWidgetTrain;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要修改的行。");
+            return;
+        }
+        int train_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Train>::iterator p = train_set.begin();
+        while (p != train_set.end()) {
+            if (p->GetTrainId() == train_id) {
+                break;
+            }
+            p++;
+        }
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(0);
+        trainMADlg->TrainSetting(&(*p), &train_set, &station_set);
+        trainMADlg->exec();
+        RefreshTrainTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 1) {
+        QTableWidget* table = ui.tableWidgetStation;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要修改的行。");
+            return;
+        }
+        int station_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Station>::iterator p = station_set.begin();
+        while (p != station_set.end()) {
+            if (p->GetStationId() == station_id) {
+                break;
+            }
+            p++;
+        }
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(2);
+        trainMADlg->StationSetting(&(*p), &station_set);
+        trainMADlg->exec();
+        RefreshStationTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 2) {
+        QTableWidget* table = ui.tableWidgetSchedule;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要修改的行。");
+            return;
+        }
+        int schedule_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<TrainSchedule>::iterator p = train_schedule_set.begin();
+        while (p != train_schedule_set.end()) {
+            if (p->GetScheduleId() == schedule_id) {
+                break;
+            }
+            p++;
+        }
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(4);
+        trainMADlg->ScheduleSetting(&(*p), &train_set, &station_set);
+        trainMADlg->exec();
+        RefreshScheduleTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 3) {
+        QTableWidget* table = ui.tableWidgetSeat;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要修改的行。");
+            return;
+        }
+        int seat_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Seat>::iterator p = seat_set.begin();
+        while (p != seat_set.end()) {
+            if (p->GetSeatId() == seat_id) {
+                break;
+            }
+            p++;
+        }
+        ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(6);
+        trainMADlg->SeatSetting(&(*p), &train_set, &station_set, &seat_set);
+        trainMADlg->exec();
+        RefreshSeatTable();
+        table->setCurrentCell(-1, -1);
+    }
+}
+
+void AdministratorMainWindow::deleteRecord(int kind) 
+{
+    if (kind == 0) {
+        QTableWidget* table = ui.tableWidgetTrain;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要删除的行。");
+            return;
+        }
+        int train_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Train>::iterator p = train_set.begin();
+        while (p != train_set.end()) {
+            if (p->GetTrainId() == train_id) {
+                break;
+            }
+            p++;
+        }
+        train_set.erase(p);
+        RefreshTrainTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 1) {
+        QTableWidget* table = ui.tableWidgetStation;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要删除的行。");
+            return;
+        }
+        int station_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Station>::iterator p = station_set.begin();
+        while (p != station_set.end()) {
+            if (p->GetStationId() == station_id) {
+                break;
+            }
+            p++;
+        }
+        station_set.erase(p);
+        RefreshStationTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 2) {
+        QTableWidget* table = ui.tableWidgetSchedule;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要删除的行。");
+            return;
+        }
+        int schedule_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<TrainSchedule>::iterator p = train_schedule_set.begin();
+        while (p != train_schedule_set.end()) {
+            if (p->GetScheduleId() == schedule_id) {
+                break;
+            }
+            p++;
+        }
+        train_schedule_set.erase(p);
+        RefreshScheduleTable();
+        table->setCurrentCell(-1, -1);
+    }
+    else if (kind == 3) {
+        QTableWidget* table = ui.tableWidgetSeat;
+        if (table->currentRow() == -1) {
+            QMessageBox::warning(this, "警告", "请先选中要删除的行。");
+            return;
+        }
+        int seat_id = table->item(table->currentRow(), 0)->text().toInt();
+        deque<Seat>::iterator p = seat_set.begin();
+        while (p != seat_set.end()) {
+            if (p->GetSeatId() == seat_id) {
+                break;
+            }
+            p++;
+        }
+        seat_set.erase(p);
+        RefreshSeatTable();
+        table->setCurrentCell(-1, -1);
+    }
+    
 }
 
 
@@ -1143,4 +1406,15 @@ void AdministratorMainWindow::onToggleLockClicked() {
             }
         }
     }
+}
+
+static void showSuccessBox(QWidget* parent)
+{
+    QMessageBox SuccessBox(parent);
+    SuccessBox.setWindowTitle("Success");
+    SuccessBox.setText("添加成功！");
+    QPixmap iconPixmap(":/new/prefix1/image/success.png");	//调整图标大小
+    iconPixmap = iconPixmap.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    SuccessBox.setIconPixmap(iconPixmap);
+    SuccessBox.exec();
 }

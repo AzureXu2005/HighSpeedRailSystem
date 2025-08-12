@@ -36,6 +36,9 @@ public:
     void RefreshSeatTable();
     void SeatSearch();
     void onClickedSeatOperation();
+    void addRecord(int kind);
+    void modifyRecord(int kind);
+    void deleteRecord(int kind);
     void OrdersTableSetting();
     void OrderFiltering();
     void OrderEditChanged();
@@ -72,3 +75,4 @@ private:
 
 };
 
+static void showSuccessBox(QWidget* parent);
