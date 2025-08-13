@@ -19,8 +19,9 @@ int main(int argc, char *argv[])
 
     TemplateSet<Users> users_set;
 
-    LoginInterfaceW login(&users_set);
-    login.exec();
+    LoginInterfaceW* login = new LoginInterfaceW(&users_set);
+    QObject::connect(login, &LoginInterfaceW::destroyed, &app, &QApplication::quit);
+    login->show();
 
     return app.exec();
 }

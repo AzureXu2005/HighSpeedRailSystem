@@ -105,7 +105,9 @@ HighSpeedRailSystem::HighSpeedRailSystem(Users *user, TemplateSet<Users>* user_s
 }
 
 HighSpeedRailSystem::~HighSpeedRailSystem()
-{}
+{
+    WriteToTxtFile();
+}
 
 
 void HighSpeedRailSystem::LoadFromTxtFile()
@@ -115,6 +117,16 @@ void HighSpeedRailSystem::LoadFromTxtFile()
     order_set.ReadFromFile("orders.txt");
     station_set.ReadFromFile("stations.txt");
     seat_set.ReadFromFile("seats.txt");
+}
+
+void HighSpeedRailSystem::WriteToTxtFile()
+{
+    mp_user_set->WriteToFile("users.txt");
+    train_set.WriteToFile("trains.txt");
+    train_schedule_set.WriteToFile("train_schedule.txt");
+    order_set.WriteToFile("orders.txt");
+    station_set.WriteToFile("stations.txt");
+    seat_set.WriteToFile("seats.txt");
 }
 
 void HighSpeedRailSystem::TicketsTableSetting()

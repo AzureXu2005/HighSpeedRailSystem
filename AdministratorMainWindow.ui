@@ -589,7 +589,7 @@ QLineEdit:hover:!focus {
          <string/>
         </property>
         <property name="placeholderText">
-         <string>输入列车车次以查询时刻表</string>
+         <string>输入列车车次或到达车站以查询时刻表</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonScheduleS">

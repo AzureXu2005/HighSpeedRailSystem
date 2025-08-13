@@ -19,6 +19,7 @@ public:
     HighSpeedRailSystem(Users* user, TemplateSet<Users>* user_set, QWidget* parent = nullptr);
     ~HighSpeedRailSystem();
     void LoadFromTxtFile();
+    void WriteToTxtFile();
     void TicketsTableSetting();
     //void InitFreshTable(QTableWidget* ticket_table, int row, QDate q_depart_date);
     void refreshTicketsTableInterface();

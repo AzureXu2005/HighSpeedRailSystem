@@ -89,7 +89,7 @@ AdministratorMainWindow::AdministratorMainWindow(Users* user, TemplateSet<Users>
 
 AdministratorMainWindow::~AdministratorMainWindow()
 {
-
+    WriteToTxtFile();
 }
 
 void AdministratorMainWindow::LoadFromTxtFile()
@@ -99,6 +99,16 @@ void AdministratorMainWindow::LoadFromTxtFile()
     order_set.ReadFromFile("orders.txt");
     station_set.ReadFromFile("stations.txt");
     seat_set.ReadFromFile("seats.txt");
+}
+
+void AdministratorMainWindow::WriteToTxtFile()
+{
+    mp_user_set->WriteToFile("users.txt");
+    train_set.WriteToFile("trains.txt");
+    train_schedule_set.WriteToFile("train_schedule.txt");
+    order_set.WriteToFile("orders.txt");
+    station_set.WriteToFile("stations.txt");
+    seat_set.WriteToFile("seats.txt");
 }
 
 void AdministratorMainWindow::InitTableSetting()
@@ -176,6 +186,7 @@ void AdministratorMainWindow::TrainSearch()
             }
         }
     }
+    train_table->setCurrentCell(-1, -1);
 }
 
 void AdministratorMainWindow::onClickedTrainOperation()
@@ -243,6 +254,7 @@ void AdministratorMainWindow::StationSearch()
             }
         }
     }
+    station_table->setCurrentCell(-1, -1);
 }
 
 void AdministratorMainWindow::onClickedStationOperation()
@@ -325,7 +337,7 @@ void AdministratorMainWindow::ScheduleSearch()
     else {
         QString search_text = ui.lineEditScheduleL->text();
         for (int row = 0; row < schedule_table->rowCount(); row++) {
-            if (schedule_table->item(row, 1)->text() == search_text) {
+            if (schedule_table->item(row, 1)->text() == search_text || schedule_table->item(row, 2)->text() == search_text) {
                 schedule_table->setRowHidden(row, false);
             }
             else {
@@ -333,6 +345,7 @@ void AdministratorMainWindow::ScheduleSearch()
             }
         }
     }
+    schedule_table->setCurrentCell(-1, -1);
 }
 
 void AdministratorMainWindow::onClickedScheduleOperation()
@@ -412,6 +425,7 @@ void AdministratorMainWindow::SeatSearch()
             }
         }
     }
+    seat_table->setCurrentCell(-1, -1);
 }
 
 void AdministratorMainWindow::onClickedSeatOperation()
@@ -1257,7 +1271,7 @@ void AdministratorMainWindow::RefreshUsersTable()
                 QPushButton:pressed {
                     background-color: #16a085;
                 })";
-            ResetStatusButton->setStyleSheet(ResetStatusStyle0);
+            ResetStatusButton->setStyleSheet(ResetStatusStyle1);
         }
         user_table->setCellWidget(row, 8, ResetStatusButton);
 

@@ -25,13 +25,13 @@ LoginInterfaceW::LoginInterfaceW(TemplateSet<Users>* p_users, QDialog *parent)
 				HighSpeedRailSystem* window = new HighSpeedRailSystem(current_user, p_UsersSet);
 				window->setAttribute(Qt::WA_DeleteOnClose);
 				window->show();
-				this->close();
+				this->hide();
 			}
 			else {
 				AdministratorMainWindow* admin_window = new AdministratorMainWindow(current_user, p_UsersSet);
 				admin_window->setAttribute(Qt::WA_DeleteOnClose);
 				admin_window->show();
-				this->close();
+				this->hide();
 			}
 		}
 		});

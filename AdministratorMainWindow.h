@@ -20,6 +20,7 @@ public:
     ~AdministratorMainWindow();
     void InitTableSetting();
     void LoadFromTxtFile();
+    void WriteToTxtFile();
     void TrainTableSetting();
     void RefreshTrainTable();
     void TrainSearch();
