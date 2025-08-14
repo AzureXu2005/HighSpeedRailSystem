@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "iostream"
 #include "qdatetime.h"
 using namespace std;
@@ -29,13 +29,15 @@ public:
 
 	//Overloaded operator() for setting properties of Date object
 	Date& operator()(int y, int m, int d, int h, int mi);
+	//字符串类型转化为Date类型
 	Date& operator()(string ymdhm_s);
 
 	//Converts date attributes to string in"yy-mm-dd" format.
+	//Date转化为字符串yyyy-mm-dd
 	string Format();
-
+	//Date转化为字符串yyyy-mm-dd hh:mm
 	string Format2();
-
+	//Date转化为字符串hh:mm
 	string Format3();
 
 	//Overloaded comparison operators

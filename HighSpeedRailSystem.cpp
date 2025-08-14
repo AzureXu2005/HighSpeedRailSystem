@@ -873,7 +873,9 @@ void HighSpeedRailSystem::UpdateCompleted()
         }
         QDateTime travel_date_time(travel_date, depart_time);
         if (travel_date_time < dateTime) {
-            order_p->SetStatus("completed");
+            if (order_p->GetStatus() == "booked") {
+                order_p->SetStatus("completed");
+            }
         }
     }
 }
