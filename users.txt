@@ -4,3 +4,4 @@ user_id,username,display_name,password,phone,role,id_card
 3,张伟,zhangwei123,zw123,13800000002,customer,110101200001018765
 4,王芳,wangfang123,wf123,13800000003,customer,110101199701012345
 5,王辉,wanghui123,wh123,16800232340,customer,150203200403235613
+6,测试,ceshi,cs123,15020304567,customer,150203200502034817

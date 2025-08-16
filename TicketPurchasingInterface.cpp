@@ -87,7 +87,7 @@ static void showSuccessBox(QWidget* parent)
 void TicketPurchasingInterface::PurchasingTicket()
 {
 	Order new_order;
-	int order_id = order_set->back().GetOrderId() + 1;
+	int order_id = order_set->empty() ? 1 : order_set->back().GetOrderId() + 1;
 	QDateTime current_time = QDateTime::currentDateTime();
 	Date order_time(current_time.date().year(), current_time.date().month(), current_time.date().day(), current_time.time().hour(), current_time.time().minute());
 	int train_id = booking_train->GetTrainId();

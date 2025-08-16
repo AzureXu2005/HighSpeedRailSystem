@@ -448,7 +448,7 @@ void AdministratorMainWindow::addRecord(int kind)
     if (kind == 0) {
         QTableWidget* table = ui.tableWidgetTrain;
         Train new_train;
-        int new_train_id = train_set.back().GetTrainId() + 1;
+        int new_train_id = train_set.empty() ? 1 : train_set.back().GetTrainId() + 1;
         new_train.SetTrainId(new_train_id);
         ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(1);
         trainMADlg->TrainAddInit(&new_train, &train_set, &station_set);
@@ -463,7 +463,7 @@ void AdministratorMainWindow::addRecord(int kind)
     else if (kind == 1) {
         QTableWidget* table = ui.tableWidgetStation;
         Station new_station;
-        int new_station_id = station_set.back().GetStationId() + 1;
+        int new_station_id = station_set.empty() ? 1 : station_set.back().GetStationId() + 1;
         new_station.SetStationId(new_station_id);
         ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(3);
         trainMADlg->StationAddInit(&new_station, &station_set);
@@ -478,7 +478,7 @@ void AdministratorMainWindow::addRecord(int kind)
     else if (kind == 2) {
         QTableWidget* table = ui.tableWidgetSchedule;
         TrainSchedule new_schedule;
-        int new_schedule_id = train_schedule_set.back().GetScheduleId() + 1;
+        int new_schedule_id = train_schedule_set.empty() ? 1 : train_schedule_set.back().GetScheduleId() + 1;
         new_schedule.SetScheduleId(new_schedule_id);
         ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(5);
         trainMADlg->ScheduleAddInit(&new_schedule, &train_set, &station_set);
@@ -493,7 +493,7 @@ void AdministratorMainWindow::addRecord(int kind)
     else if (kind == 3) {
         QTableWidget* table = ui.tableWidgetSeat;
         Seat new_seat;
-        int new_seat_id = seat_set.back().GetSeatId() + 1;
+        int new_seat_id = seat_set.empty() ? 1 : seat_set.back().GetSeatId() + 1;
         new_seat.SetSeatId(new_seat_id);
         ModifyAndAddInterface* trainMADlg = new ModifyAndAddInterface(7);
         trainMADlg->SeatAddInit(&new_seat, &train_set, &station_set, &seat_set);
@@ -600,6 +600,28 @@ void AdministratorMainWindow::deleteRecord(int kind)
             return;
         }
         int train_id = table->item(table->currentRow(), 0)->text().toInt();
+        for (deque<Order>::iterator p = order_set.begin(); p != order_set.end(); p++) {
+            if (p->GetTrainId() == train_id) {
+                QMessageBox::warning(this, "警告", "这辆列车已经有乘客买过单了，您不可以删除");
+                return;
+            }
+        }
+        for (auto p = train_schedule_set.begin(); p != train_schedule_set.end(); ) {
+            if (p->GetTrainId() == train_id) {
+                p = train_schedule_set.erase(p);  // erase 返回下一个有效迭代器
+            }
+            else {
+                ++p;  // 只有不删除时才推进迭代器
+            }
+        }
+        for (auto p = seat_set.begin(); p != seat_set.end(); ) {
+            if (p->GetTrainId() == train_id) {
+                p = seat_set.erase(p);  // erase 返回下一个有效迭代器
+            }
+            else {
+                ++p;  // 只有不删除时才推进迭代器
+            }
+        }
         deque<Train>::iterator p = train_set.begin();
         while (p != train_set.end()) {
             if (p->GetTrainId() == train_id) {
@@ -609,7 +631,10 @@ void AdministratorMainWindow::deleteRecord(int kind)
         }
         train_set.erase(p);
         RefreshTrainTable();
+        RefreshScheduleTable();
+        RefreshSeatTable();
         table->setCurrentCell(-1, -1);
+        QMessageBox::information(this, "info", "已经删除了这辆列车，同时也删除了该辆车的时刻表信息和座位信息。");
     }
     else if (kind == 1) {
         QTableWidget* table = ui.tableWidgetStation;
@@ -618,6 +643,13 @@ void AdministratorMainWindow::deleteRecord(int kind)
             return;
         }
         int station_id = table->item(table->currentRow(), 0)->text().toInt();
+        for (deque<TrainSchedule>::iterator p = train_schedule_set.begin(); p != train_schedule_set.end(); p++) {
+            if (p->GetStationId() == station_id) {
+                QMessageBox::warning(this, "警告", "时刻表显示：这个站点有列车通过，不能删除。");
+                return;
+            }
+        }
+
         deque<Station>::iterator p = station_set.begin();
         while (p != station_set.end()) {
             if (p->GetStationId() == station_id) {
@@ -654,6 +686,12 @@ void AdministratorMainWindow::deleteRecord(int kind)
             return;
         }
         int seat_id = table->item(table->currentRow(), 0)->text().toInt();
+        for (auto p = order_set.begin(); p != order_set.end(); p++) {
+            if (p->GetSeatId() == seat_id) {
+                QMessageBox::warning(this, "警告", "该座位已有人买过票，不能删除");
+                return;
+            }
+        }
         deque<Seat>::iterator p = seat_set.begin();
         while (p != seat_set.end()) {
             if (p->GetSeatId() == seat_id) {
@@ -701,11 +739,16 @@ void AdministratorMainWindow::OrdersTableSetting()
         int seat_id = order_set[row].GetSeatId();
         int start_stop_order = 0;
         int end_stop_order = 0;
+        bool find_user = false;
         for (deque<Users>::iterator p = mp_user_set->begin(); p != mp_user_set->end(); p++) {
             if (p->GetUserId() == user_id) {
+                find_user = true;
                 id_card = p->GetIdCard().c_str();
                 break;
             }
+        }
+        if (!find_user) {
+            id_card = "用户已注销或不存在";
         }
         for (deque<Train>::iterator p = train_set.begin(); p != train_set.end(); p++) {
             if (p->GetTrainId() == train_id) {
@@ -849,6 +892,10 @@ void AdministratorMainWindow::RebookOperation()
     }
     else if (order_table->item(current_row, 12)->text() != "已预定") {
         QMessageBox::warning(this, "警告", "已完成或已取消的车票不能改签。");
+        return;
+    }
+    else if (order_table->item(current_row, 1)->text() == "用户已注销或不存在") {
+        QMessageBox::warning(this, "警告", "已注销的用户不能改签。");
         return;
     }
     else {

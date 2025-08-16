@@ -25,7 +25,10 @@ void RegisterInterface::LoadUsersInformation()
 
 void RegisterInterface::WriteUsersInformation()
 {
-	p_UsersSet->WriteToFile("users.txt");
+	int result = p_UsersSet->WriteToFile("users.txt");
+	if (result == -1) {
+		QMessageBox::warning(this, "错误", "文件保存失败，请检查文件路径");
+	}
 }
 
 static bool dateRight(int y, int m, int d)
@@ -76,7 +79,7 @@ void RegisterInterface::Register()
 			Users u;
 			int user_id = 0;
 			Users u_end = p_UsersSet->back();
-			user_id = u_end.GetUserId() + 1;
+			user_id = p_UsersSet->empty() ? 1 : u_end.GetUserId() + 1;
 			u.SetUserId(user_id);
 			u.SetDisplayName(display_name);
 			u.SetUsername(username);
